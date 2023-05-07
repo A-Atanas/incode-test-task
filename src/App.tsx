@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { GitHubIssue } from "./types/types";
+import getRepoIssues from "./api/getRepoIssues";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+	const [issues, setIssues] = useState<GitHubIssue[]>([]);
+	const handleAPICall = () => {
+		getRepoIssues("github.com/facebook/react").then(result => setIssues(result));
+	};
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+	return (
+		<>
+			<div className="card">
+				<button onClick={() => handleAPICall()}>Call GitHub API</button>
+			</div>
+			{issues.map(({ comments, number, title, user: { login } }) => (
+				<ul>
+					<li>{title}</li>
+					<li>{comments}</li>
+					<li>{number}</li>
+					<li>{login}</li>
+				</ul>
+			))}
+		</>
+	);
+};
 
-export default App
+export default App;
