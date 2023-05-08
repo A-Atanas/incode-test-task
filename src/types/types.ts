@@ -5,4 +5,12 @@ export type GitHubIssue = {
 	title: string;
 	number: number;
 	comments: number;
+	created_at: string;
+	assignee: {
+		login: string;
+	} | null;
+	assignees: {
+		login: string;
+	}[];
+	state: "open" | "closed";
 };
