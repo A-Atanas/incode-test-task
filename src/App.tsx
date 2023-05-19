@@ -8,7 +8,7 @@ import "./App.css";
 const App = () => {
 	const [issues, setIssues] = useState<GitHubIssue[]>([]);
 	const handleAPICall = (url: string) => {
-		getRepoIssues(url).then(result => setIssues(result));
+		getRepoIssues(url).then(result =>{setIssues(result)});
 	};
 
 	return (

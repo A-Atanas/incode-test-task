@@ -7,8 +7,7 @@ const octokit = new Octokit({
 });
 
 const getRepoIssues = async (url: string): Promise<GitHubIssue[]> => {
-	const repo: string = url.split("github.com/")[1];
-	return await octokit.request(`GET /repos/${repo}/issues`, {
+	return await octokit.request(`GET /repos/${url}/issues`, {
 		per_page: 100,
 		state: "all"
 	}).then(result => result.data);
