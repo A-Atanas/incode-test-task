@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
-import moment from "moment";
-import { GitHubIssue } from "../types/types";
+import { GitHubIssue } from "../../types/types";
+import RepoLinks from "../RepoLinks/RepoLinks";
 import { List } from "antd";
+import moment from "moment";
+import "./Repo.css";
 
 type Props = {
 	issues: GitHubIssue[];
+	url: string[];
+	stars: number;
 };
 
-const Issues = (props: Props) => {
+const Repo = (props: Props) => {
 	const [newIssues, setNewIssues] = useState<GitHubIssue[]>([]);
 	const [assignedIssues, setAssignedIssues] = useState<GitHubIssue[]>([]);
 	const [closedIssues, setClosedIssues] = useState<GitHubIssue[]>([]);
@@ -44,15 +48,18 @@ const Issues = (props: Props) => {
 	};
 
 	return (
-		<div id="issues">
-			{props.issues.length
-				? parseIssues(
-						[newIssues, assignedIssues, closedIssues],
-						["Todo", "In progress", "Closed"]
-					).map(issue => issue)
+		<div>
+			<RepoLinks urls={props.url} stars={props.stars}/>
+			<div id="issues">
+				{props.issues.length
+					? parseIssues(
+							[newIssues, assignedIssues, closedIssues],
+							["Todo", "In progress", "Closed"]
+						).map(issue => issue)
 				: null}
+			</div>
 		</div>
 	);
 };
 
-export default Issues;
+export default Repo;

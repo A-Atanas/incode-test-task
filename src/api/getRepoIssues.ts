@@ -1,9 +1,8 @@
 import { Octokit } from "octokit";
 import { GitHubIssue } from "../types/types";
-// import moment from "moment";
 
 const octokit = new Octokit({
-	auth: "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",
+	auth: "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",
 });
 
 const getRepoIssues = async (url: string): Promise<GitHubIssue[]> => {

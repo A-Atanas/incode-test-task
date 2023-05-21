@@ -14,3 +14,7 @@ export type GitHubIssue = {
 	}[];
 	state: "open" | "closed";
 };
+
+export type GitHubRepoData = {
+	stargazers_count: number
+}

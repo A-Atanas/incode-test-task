@@ -1,0 +1,12 @@
+#issues {
+    display: flex;
+    justify-content: space-between;
+}
+
+#issues > div {
+    width: 30%;
+}
+
+#issues h1 {
+    text-align: center;
+}

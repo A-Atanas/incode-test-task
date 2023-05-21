@@ -1,0 +1,18 @@
+#repoLinks {
+    display: flex;
+    margin-block-start: 1em;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#repoLinks a {
+    text-decoration: none;
+}
+
+#repoLinks a:visited {
+    color: blue;
+}
+
+#repoLinks p {
+    margin: 0 .5em;
+}
