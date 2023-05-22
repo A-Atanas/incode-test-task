@@ -1,28 +1,22 @@
-import { useState } from "react";
-import { GitHubIssue } from "./types/types";
 import SearchForm from "./components/SearchForm";
 import Repo from "./components/Repo/Repo";
-import getRepoIssues from "./api/getRepoIssues";
-import getRepoStars from "./api/getRepoStars";
+import { useAppSelector, useAppDispatch } from "./redux/hooks";
+import { getIssues, getStars } from "./redux/issues";
 import "./App.css";
 
 const App = () => {
-  const [issues, setIssues] = useState<GitHubIssue[]>([]);
-  const [url, setUrl] = useState<string[]>([]);
-  const [stars, setStars] = useState<number>(0);
+  const repoData = useAppSelector((state) => state.repo);
+  const dispatch = useAppDispatch()
 
   const handleAPICall = (url: string) => {
-    getRepoIssues(url).then((result) => {
-      setIssues(result);
-	    setUrl(url.split("/"));
-    });
-    getRepoStars(url).then((result) => setStars(result.stargazers_count))
+    dispatch(getIssues(url));
+    dispatch(getStars(url));
   };
 
   return (
     <>
       <SearchForm handleAPICall={handleAPICall} />
-      <Repo issues={issues} url={url} stars={stars}/>
+      <Repo issues={repoData.issues} urlParts={repoData.urlParts} stars={repoData.repoStars}/>
     </>
   );
 };

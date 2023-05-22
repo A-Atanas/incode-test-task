@@ -1,29 +1,27 @@
+import { Breadcrumb } from "antd";
 import "./RepoLinks.css";
 import {StarTwoTone} from "@ant-design/icons";
 
 type Props = {
-    urls: string[];
+    urlParts: string[];
 	stars: number;
 }
 
-const RepoLinks = ({urls, stars}: Props) => {
-
-	const parseRepoLinks = (urls: string[]): JSX.Element[] => {
-		let result: JSX.Element[] = [];
-		let intermediateLink = "";
-		urls.reduce((accumulator: JSX.Element[], current) => {
-			accumulator.push(<a key={current} href={`https://github.com/${intermediateLink + current}`}>{current}</a>)
-			intermediateLink += `${current}/`
-			accumulator.push(<p>&gt;</p>)
-			return accumulator;
-		}, result);
-		result.pop();
-		return result;
-	}
-
+const RepoLinks = ({urlParts, stars}: Props) => {
   return (
     <div id="repoLinks">
-        {parseRepoLinks(urls)}
+        <Breadcrumb 
+			items={urlParts.map((part, index, arr) => {
+				return {
+					title: (
+						<a key={index} href={`https://github.com/${arr.slice(0, index + 1).join("/")}`}>
+							{part}
+						</a>
+					)
+				}
+			})}
+			separator={">"}
+		/>
 		{stars ? <p><StarTwoTone twoToneColor="#fc6f03"/> {stars} stars</p> : null}
     </div>
   )

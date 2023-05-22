@@ -10,3 +10,20 @@
 #issues h1 {
     text-align: center;
 }
+
+.issue {
+    display: flex;
+    flex-direction: column;
+}
+
+.issue div {
+    display: flex;
+}
+
+.issue p {
+    margin-inline-end: 0.5em;
+}
+
+.issue p, .issue h3 {
+    margin-block: 0.5em;
+}

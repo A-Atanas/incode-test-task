@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { GitHubIssue } from "../../types/types";
 import RepoLinks from "../RepoLinks/RepoLinks";
 import { List } from "antd";
@@ -7,25 +6,11 @@ import "./Repo.css";
 
 type Props = {
 	issues: GitHubIssue[];
-	url: string[];
+	urlParts: string[];
 	stars: number;
 };
 
 const Repo = (props: Props) => {
-	const [newIssues, setNewIssues] = useState<GitHubIssue[]>([]);
-	const [assignedIssues, setAssignedIssues] = useState<GitHubIssue[]>([]);
-	const [closedIssues, setClosedIssues] = useState<GitHubIssue[]>([]);
-
-	useEffect(() => {
-		setNewIssues(
-			props.issues.filter(issue => moment(issue.created_at).isSame(moment(), "day"))
-		);
-		setAssignedIssues(
-			props.issues.filter(issue => issue.assignee != null || issue.assignees.length != 0)
-		);
-		setClosedIssues(props.issues.filter(issue => issue.state === "closed"));
-	}, [props.issues]);
-
 	const parseIssues = (issueTypes: GitHubIssue[][], listTitles: string[]): JSX.Element[] => {
 		return issueTypes.map((type, index) => (
 			<List
@@ -33,27 +18,39 @@ const Repo = (props: Props) => {
 				itemLayout="vertical"
 				dataSource={type}
 				renderItem={({ comments, number, title, user: { login }, created_at }) => (
-					<ul>
-						<li>{title}</li>
-						<li>{comments}</li>
-						<li>{number}</li>
-						<li>{login}</li>
-						<li>{created_at}</li>
-					</ul>
+					<List.Item>
+						<div className="issue">
+							<h3>{title}</h3>
+							<div>
+								<p>#{number}</p>
+								<p>Opened {moment(created_at).fromNow()}</p>
+							</div>
+							<div>
+								<p>{login}</p>
+								<p>|</p>
+								<p>Comments: {comments}</p>
+							</div>
+						</div>
+					</List.Item>
 				)}
 				rowKey={({ number }) => number}
 				key={index}
+				bordered
 			></List>
 		));
 	};
 
 	return (
 		<div>
-			<RepoLinks urls={props.url} stars={props.stars}/>
+			<RepoLinks urlParts={props.urlParts} stars={props.stars}/>
 			<div id="issues">
 				{props.issues.length
 					? parseIssues(
-							[newIssues, assignedIssues, closedIssues],
+							[
+								props.issues.filter(issue => moment(issue.created_at).isSame(moment(), "day")), 
+								props.issues.filter(issue => issue.assignee != null || issue.assignees.length != 0), 
+								props.issues.filter(issue => issue.state === "closed")
+							],
 							["Todo", "In progress", "Closed"]
 						).map(issue => issue)
 				: null}
