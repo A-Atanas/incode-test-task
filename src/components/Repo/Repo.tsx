@@ -60,7 +60,7 @@ const Repo = () => {
 		));
 	};
 
-	const dropIssue = ({source, destination, draggableId}: DropResult) => {
+	const dropIssue = ({source, destination}: DropResult) => {
 		if (!destination) return;
 		if (destination.droppableId === source.droppableId) {
 			if (destination.index === source.index) return;
