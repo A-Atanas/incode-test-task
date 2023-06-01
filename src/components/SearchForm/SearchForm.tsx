@@ -1,11 +1,13 @@
 import { getIssues, getStars } from "../../redux/issues";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {Input} from "antd";
+import {WarningFilled} from "@ant-design/icons";
 
 const {Search} = Input;
 
 const SearchForm = () => {
-	const dispatch = useAppDispatch()
+	const wasSearchLinkInvalid = useAppSelector((state) => state.repo.wasSearchLinkInvalid);
+	const dispatch = useAppDispatch();
   
 	const handleAPICall = (url: string) => {
 	  dispatch(getIssues(url));
@@ -19,6 +21,8 @@ const SearchForm = () => {
 				enterButton="Get issues"
 				placeholder="repo-owner/repository-name"
 				onSearch={handleAPICall}
+				status={wasSearchLinkInvalid ? "error": ""}
+				prefix={wasSearchLinkInvalid ? <WarningFilled /> : null}
 			/>
 		</div>
 	);

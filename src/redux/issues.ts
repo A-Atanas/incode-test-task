@@ -7,7 +7,8 @@ import moment from "moment";
 interface AppState {
   issues: GitHubIssue[][],
   urlParts: string[],
-  repoStars: number
+  repoStars: number,
+  wasSearchLinkInvalid: boolean
 }
 
 interface SwapIssuesPayload {
@@ -20,7 +21,8 @@ interface SwapIssuesPayload {
 const initialState: AppState = {
   issues: [],
   urlParts: [],
-  repoStars: 0
+  repoStars: 0,
+  wasSearchLinkInvalid: false
 }
 
 export const getIssues = createAsyncThunk("repo/issues", async (url: string) => {
@@ -47,6 +49,7 @@ export const repoIssues = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(getIssues.fulfilled, (state, action) => {
+      state.wasSearchLinkInvalid = false;
       if (!action.payload.isFromStorage) {
         state.issues[0] = action.payload.issues.filter((issue: GitHubIssue) => moment(issue.created_at).isSame(moment(), "day"));
         state.issues[1] = action.payload.issues.filter((issue: GitHubIssue) => issue.assignee != null);
@@ -57,6 +60,8 @@ export const repoIssues = createSlice({
       state.urlParts = action.payload.url.split("/");
     }).addCase(getStars.fulfilled, (state, action) => {
       state.repoStars = action.payload.stargazers_count
+    }).addCase(getIssues.rejected, (state) => {
+      state.wasSearchLinkInvalid = true;
     })
   },
 })
