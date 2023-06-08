@@ -1,0 +1,14 @@
+#repoLinks {
+    display: flex;
+    margin-block: 1em;
+    /* font-size: 18px; */
+    font-weight: bold;
+}
+
+#repoLinks p {
+    margin: 0 .5em;
+}
+
+.ant-breadcrumb-link a {
+    color: rgb(0, 81, 255);
+}
